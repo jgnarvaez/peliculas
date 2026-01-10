@@ -1,0 +1,10 @@
+INSERT INTO GENEROS(NOMBRE) VALUES('Acción');
+INSERT INTO GENEROS(NOMBRE) VALUES('Comedia');
+INSERT INTO GENEROS(NOMBRE) VALUES('Drama');
+INSERT INTO GENEROS(NOMBRE) VALUES('Fantasia');
+INSERT INTO GENEROS(NOMBRE) VALUES('Terros');
+
+INSERT INTO ACTORES(NOMBRE, URL_IMAGEN) VALUES('Scarlett Johansson', 'https://m.media-amazon.com/images/M/MV5BMTM3OTUwMDYwNl5BMl5BanBnXkFtZTcwNTUyNzc3Nw@@._V1_FMjpg_UX1000_.jpg');
+INSERT INTO ACTORES(NOMBRE, URL_IMAGEN) VALUES('Anne Hathaway', 'https://m.media-amazon.com/images/M/MV5BMTRhNzQ3NGMtZmQ1Mi00ZTViLTk3OTgtOTk0YzE2YTgwMmFjXkEyXkFqcGdeQXVyNzg5MzIyOA@@._V1_.jpg');
+INSERT INTO ACTORES(NOMBRE, URL_IMAGEN) VALUES('Keanu Reeves', 'https://tse4.mm.bing.net/th/id/OIP.nakbXKQtC6U7yrChH3IFvQHaLH?rs=1&pid=ImgDetMain&o=7&rm=3');
+INSERT INTO ACTORES(NOMBRE, URL_IMAGEN) VALUES('Johnny Depp', 'https://th.bing.com/th/id/R.db3dcd24b8c475e9f1969444878f9eb2?rik=aSsY1kIXiXjVOA&pid=ImgRaw&r=0');
