@@ -1,5 +1,6 @@
 package com.qvisiontechnologies.peliculas.controllers;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -11,10 +12,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.qvisiontechnologies.peliculas.entities.Actor;
 import com.qvisiontechnologies.peliculas.entities.Pelicula;
 import com.qvisiontechnologies.peliculas.services.IActorService;
+import com.qvisiontechnologies.peliculas.services.IArchivoService;
 import com.qvisiontechnologies.peliculas.services.IGeneroService;
 import com.qvisiontechnologies.peliculas.services.IPeliculaService;
 
@@ -26,12 +30,14 @@ public class PeliculasController {
     private IPeliculaService peliculaService;
     private IGeneroService generoService;
     private IActorService actorService;
+    private IArchivoService archivoService;
 
     public PeliculasController(IPeliculaService peliculaService, IGeneroService generoService,
-            IActorService actorService) {
+            IActorService actorService, IArchivoService archivoService) {
         this.peliculaService = peliculaService;
         this.generoService = generoService;
         this.actorService = actorService;
+        this.archivoService = archivoService;
     }
 
     @GetMapping("/pelicula")
@@ -46,7 +52,7 @@ public class PeliculasController {
 
     @GetMapping("/pelicula/{id}")
     public String editar(@PathVariable(name = "id") Long id, Model model) {
-        Pelicula pelicula = new Pelicula();
+        Pelicula pelicula = peliculaService.findById(id);
         model.addAttribute("pelicula", pelicula);
         model.addAttribute("generos", generoService.findAll());
         model.addAttribute("actores", actorService.findAll());
@@ -56,12 +62,24 @@ public class PeliculasController {
 
     @PostMapping("/pelicula")
     public String guardar(@Valid Pelicula pelicula, BindingResult br, @ModelAttribute(name = "ids") String ids,
-            Model model) {
+            Model model, @RequestParam("archivo") MultipartFile imagen) {
 
         if (br.hasErrors()) {
             model.addAttribute("generos", generoService.findAll());
             model.addAttribute("actores", actorService.findAll());
             return "pelicula";
+        }
+
+        if (!imagen.isEmpty()) {
+            String archivo = pelicula.getNombre() + getExtension(imagen.getOriginalFilename());
+            pelicula.setImagen(archivo);
+            try {
+                archivoService.guardar(archivo, imagen.getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            pelicula.setImagen("default_.jpg");
         }
 
         List<Long> idsProtagonistas = Arrays.stream(ids.split(",")).map(Long::parseLong).collect(Collectors.toList());
@@ -71,11 +89,22 @@ public class PeliculasController {
         return "redirect:home";
     }
 
+    private String getExtension(String archivo) {
+        return archivo.substring(archivo.lastIndexOf("."));
+    }
+
     @GetMapping({ "/", "/home", "/index" })
     public String home(Model model) {
         model.addAttribute("peliculas", peliculaService.findAll());
-        model.addAttribute("msj", "La app está en mantenimiento");
-        model.addAttribute("tipoMsj", "danger");
+        //model.addAttribute("msj", "La app está en mantenimiento");
+        //model.addAttribute("tipoMsj", "danger");
         return "home";
+    }
+
+    @GetMapping({ "/listado" })
+    public String listado(Model model) {
+        model.addAttribute("titulo", "Listado de Películas");
+        model.addAttribute("peliculas", peliculaService.findAll());
+        return "listado";
     }
 }

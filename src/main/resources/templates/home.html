@@ -11,7 +11,7 @@
         <div class="row row-cols-1 row-cols-md-6 g-4">
             <div class="col" th:each="pelicula : ${peliculas}">
                 <div class="card">
-                    <img src="https://tse1.mm.bing.net/th/id/OIP.lxKMFRIP3KSBWv94SxDQhwHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" class="card-img-top" alt="foto">
+                    <img th:src="@{${'/archivo?n='} + ${pelicula.imagen == null ? 'default_.jpg' : pelicula.imagen }}" class="card-img-top" alt="foto">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${pelicula.nombre}"></h5>
                         <p class="card-text" th:text="${pelicula.genero.nombre}"></p>

@@ -29,14 +29,14 @@ function agregarActor(id, nombre, urlImagen) {
             </div>
         </div>`;
 
-        htmlString = htmlString.replace("{URL-IMAGEN}", urlImagen);
-        htmlString = htmlString.replace("{NOMBRE}", nombre);
-        htmlString = htmlString.replace("{ID}", id);
+    htmlString = htmlString.replace("{URL-IMAGEN}", urlImagen);
+    htmlString = htmlString.replace("{NOMBRE}", nombre);
+    htmlString = htmlString.replace("{ID}", id);
 
-        $("#protagonistas_container").append(htmlString);
+    $("#protagonistas_container").append(htmlString);
 }
 
-function eliminarActor(btn){
+function eliminarActor(btn) {
     let id = btn.dataset.id;
     let node = btn.parentElement.parentElement;
     let arrayIds = $("#ids").val().split(",").filter(idActor => idActor != id);
@@ -46,4 +46,16 @@ function eliminarActor(btn){
     $("#protagonistas option[value='" + id + "']").prop("disabled", false);
 
     $(node).remove();
+}
+
+function previsualizar() {
+    let reader = new FileReader();
+
+    reader.readAsDataURL(document.getElementById("imagen").files[0]);
+
+    reader.onload = function(e) {
+        let vista = document.getElementById("vista_previa");
+        vista.classList.remove("d-node");
+        vista.style.backgroundImage = 'url("' + e.target.result + '")';
+    }
 }
