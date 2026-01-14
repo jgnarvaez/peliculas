@@ -1,9 +1,8 @@
 package com.qvisiontechnologies.peliculas.dao;
 
-import org.springframework.data.repository.CrudRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import com.qvisiontechnologies.peliculas.entities.Pelicula;
 
-public interface IPeliculaRepository extends CrudRepository<Pelicula, Long>{
+public interface IPeliculaRepository extends JpaRepository<Pelicula, Long>{
 
 }

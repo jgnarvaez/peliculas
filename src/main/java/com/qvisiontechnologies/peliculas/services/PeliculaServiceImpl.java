@@ -2,7 +2,10 @@ package com.qvisiontechnologies.peliculas.services;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.qvisiontechnologies.peliculas.dao.IPeliculaRepository;
@@ -32,6 +35,11 @@ public class PeliculaServiceImpl implements IPeliculaService {
     @Override
     public void delete(Long id) {
         repo.deleteById(id);
+    }
+
+    @Override
+    public Page<Pelicula> findAll(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 
 }
